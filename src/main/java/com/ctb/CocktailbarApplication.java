@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CocktailbarApplication {
+public class CocktailBarApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CocktailbarApplication.class, args);
+		SpringApplication.run(CocktailBarApplication.class, args);
 	}
 
 }
