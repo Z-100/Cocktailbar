@@ -30,8 +30,7 @@ public class AccountDAO {
 	@Column(name = "token")
 	private String token;
 
-	@OneToMany(
-			cascade = {CascadeType.ALL},
+	@OneToMany(cascade = {CascadeType.ALL},
 			orphanRemoval = true,
 			mappedBy = "fkAccountId")
 	@JsonBackReference

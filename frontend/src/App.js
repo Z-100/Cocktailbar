@@ -1,15 +1,17 @@
-import './App.css';
-import React from 'react';
-import Drink from './components/Drink';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Layout from "./pages/Layout";
 
-function App() {
-  return (
-      <React.Fragment>
-        <div>
-          <Drink />
-        </div>
-      </React.Fragment>
-  );
+export default function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="login" element={<Login />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
-
-export default App;

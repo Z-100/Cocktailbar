@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "account")
+@Table(name = "ingredient")
 public class IngredientDAO {
 
 	@Id
