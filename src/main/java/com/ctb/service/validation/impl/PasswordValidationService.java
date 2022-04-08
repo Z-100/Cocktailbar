@@ -18,12 +18,12 @@ public class PasswordValidationService implements IPasswordValidationService {
 			AccountDAO accountFromDB = repository.findByEmail(email);
 
 			if (accountFromDB == null)
-				throw new NullPointerException();
+				throw new NullPointerException("[ERROR] Failed to retrieve account with email ");
 
 			if (accountFromDB.getEmail().equals(email) && accountFromDB.getPassword().equals(password))
 				return accountFromDB;
 		} catch (NullPointerException e) {
-			PrintExceptionService.print("Failed to retrieve account with email " + email, e.getStackTrace());
+			PrintExceptionService.print(e.getMessage() + email, e.getStackTrace());
 		}
 		return null;
 	}
