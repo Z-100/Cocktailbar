@@ -32,6 +32,9 @@ public class AccountDAO {
 	@Column(name = "token")
 	private String token;
 
+	@Column(name = "username")
+	private String username;
+
 	@OneToMany(cascade = {CascadeType.ALL},
 			orphanRemoval = true,
 			mappedBy = "fkAccountId")

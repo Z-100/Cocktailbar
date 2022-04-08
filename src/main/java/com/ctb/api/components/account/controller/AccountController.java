@@ -5,16 +5,14 @@ import com.ctb.api.components.account.dto.AccountDTO;
 import com.ctb.api.components.account.services.mapper.AAccountMapper;
 import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.api.service.crud.account.DeleteExistingAccountService;
+import com.ctb.api.service.crud.account.ReadExistingAccountService;
 import com.ctb.other.API;
 import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
 import com.ctb.service.validation.IPasswordValidationService;
 import com.ctb.service.validation.ITokenValidationService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -24,21 +22,24 @@ import java.util.function.BiFunction;
 @AllArgsConstructor
 public class AccountController {
 
-	private final AAccountMapper mapper;
-
 	private final IPasswordValidationService pwValidation;
 	private final ITokenValidationService tokValidation;
 
+	private final ReadExistingAccountService readService;
 	private final DeleteExistingAccountService deleteService;
 
-	@GetMapping(API.LOGIN)
-	public AccountDTO login(
+
+	@PostMapping(API.LOGIN)
+	public JsonBoolean login(
 			@RequestHeader("email") final String email,
+			@RequestHeader("token") final String token,
 			@RequestHeader("password") final String password) {
 
-		AccountDAO accountFromDB = pwValidation.validate(email, password);
+		if (!tokValidation.validate(email, token))
+			return new JsonBoolean(false);
 
-		return accountFromDB != null ? mapper.toDTO(accountFromDB) : null;
+		return pwValidation.validate(email, password) != null ?
+				new JsonBoolean(true) : new JsonBoolean(false);
 	}
 
 	@GetMapping(API.REGISTER)
@@ -49,7 +50,12 @@ public class AccountController {
 		return null;
 	}
 
-	@GetMapping(API.DELETE)
+	@GetMapping(API.GET)
+	public AccountDTO getAccount(@RequestParam("username") String username) {
+		return readService.getAccount(username);
+	}
+
+	@PostMapping(API.DELETE)
 	public JsonBoolean deleteAccount(
 			@RequestHeader("email") String email,
 			@RequestHeader("password") String password,
@@ -62,7 +68,7 @@ public class AccountController {
 				new JsonBoolean(true) : new JsonBoolean(false);
 	}
 
-	@GetMapping(API.UPDATE)
+	@PostMapping(API.UPDATE)
 	public List<RecipeDTO> updateAccount() {
 
 		return null;

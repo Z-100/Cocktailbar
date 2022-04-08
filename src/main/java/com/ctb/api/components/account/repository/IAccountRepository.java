@@ -9,5 +9,7 @@ public interface IAccountRepository extends CrudRepository<AccountDAO, Long> {
 
 	AccountDAO findByEmail(String email);
 
+	AccountDAO findByUsername(String username);
+
 	AccountDAO findByEmailAndPassword(String email, String password);
 }

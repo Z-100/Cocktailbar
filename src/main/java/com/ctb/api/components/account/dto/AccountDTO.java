@@ -15,6 +15,8 @@ public class AccountDTO {
 
 	private String email;
 
+	private String username;
+
 	private List<RecipeDTO> recipes;
 
 	private List<FeedbackDTO> feedbacks;
