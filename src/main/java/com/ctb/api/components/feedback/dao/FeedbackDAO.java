@@ -1,9 +1,7 @@
-package com.ctb.api.components.recipe.dao;
+package com.ctb.api.components.feedback.dao;
 
 import com.ctb.api.components.account.dao.AccountDAO;
-import com.ctb.api.components.feedback.dao.FeedbackDAO;
-import com.ctb.api.components.ingredient.dao.IngredientDAO;
-import com.ctb.api.components.other.dao.RecipeIngredient;
+import com.ctb.api.components.recipe.dao.RecipeDAO;
 import com.ctb.other.DB;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -11,15 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = DB.RECIPE)
-public class RecipeDAO {
+@Table(name = DB.FEEDBACK)
+public class FeedbackDAO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,19 +28,17 @@ public class RecipeDAO {
 	@Column(name = "description", nullable = false)
 	private String description;
 
+	// Rating 1-5, where 1 is worst and 5 is best
+	@Column(name = "rating", nullable = false)
+	private Integer rating;
+
 	@ManyToOne
 	@JoinColumn(name = "fkAccountId")
 	@JsonManagedReference
 	private AccountDAO fkAccountId;
 
-	@OneToMany(mappedBy = "fkRecipeId",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private List<RecipeIngredient> recipes;
-
-	@OneToMany(cascade = {CascadeType.ALL},
-			orphanRemoval = true,
-			mappedBy = "fkRecipeId")
-	@JsonBackReference
-	private List<FeedbackDAO> feedbacks;
+	@ManyToOne
+	@JoinColumn(name = "fkRecipeId")
+	@JsonManagedReference
+	private RecipeDAO fkRecipeId;
 }

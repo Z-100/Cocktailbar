@@ -1,6 +1,7 @@
-package com.ctb.api.components.ingredient.controller;
+package com.ctb.api.components.feedback.controller;
 
-import com.ctb.api.components.ingredient.dto.IngredientDTO;
+import com.ctb.api.components.feedback.dto.FeedbackDTO;
+import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.other.API;
 import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
@@ -12,37 +13,38 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(URL.INGREDIENT)
+@RequestMapping(URL.FEEDBACK)
 @AllArgsConstructor
-public class IngredientController {
+public class FeedbackController {
 
 	@GetMapping(API.INSERT)
-	public JsonBoolean insertNewIngredient() {
-
-		return null;
-	}
-
-	@GetMapping(API.UPDATE)
-	public JsonBoolean updateIngredient() {
+	public FeedbackDTO insertNewFeedback() {
 
 		return null;
 	}
 
 	@GetMapping(API.DELETE)
-	public JsonBoolean deleteIngredient() {
+	public JsonBoolean deleteFeedback() {
 
 		return null;
 	}
 
-	@GetMapping(API.GET + API.ALL)
-	public List<IngredientDTO> getAllIngredients() {
+	@GetMapping(API.UPDATE)
+	public JsonBoolean updateFeedback() {
+
+		return null;
+	}
+
+	@GetMapping(API.GET + API.ALL + "{email}")
+	public List<RecipeDTO> getAllFeedbackFromAccount() {
 
 		return null;
 	}
 
 	@GetMapping(API.GET + API.ALL + "{recipeId}")
-	public List<IngredientDTO> getAllSpecificIngredients() {
+	public List<RecipeDTO> getAllFeedbackFromRecipe() {
 
 		return null;
 	}
 }
+

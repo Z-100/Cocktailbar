@@ -1,8 +1,10 @@
 package com.ctb.api.components.ingredient.dto;
 
-import com.ctb.api.components.recipe.dao.RecipeDAO;
+import com.ctb.api.components.other.dao.RecipeIngredient;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +16,5 @@ public class IngredientDTO {
 
 	private String type;
 
-	private RecipeDAO fkRecipeId;
+	private List<RecipeIngredient> ingredients;
 }

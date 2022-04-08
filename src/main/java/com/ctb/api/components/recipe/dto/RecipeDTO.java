@@ -1,8 +1,10 @@
 package com.ctb.api.components.recipe.dto;
 
-import com.ctb.api.components.ingredient.dao.IngredientDAO;
+import com.ctb.api.components.account.dao.AccountDAO;
+import com.ctb.api.components.feedback.dto.FeedbackDTO;
+import com.ctb.api.components.other.dao.RecipeIngredient;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class RecipeDTO {
 
@@ -12,5 +14,9 @@ public class RecipeDTO {
 
 	private String description;
 
-	private HashMap<Integer, IngredientDAO> ingredientsMap;
+	private AccountDAO fkAccountId;
+
+	private List<RecipeIngredient> recipes;
+
+	private List<FeedbackDTO> feedbacks;
 }

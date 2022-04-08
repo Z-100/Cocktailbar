@@ -2,6 +2,7 @@ package com.ctb.api.components.ingredient.dao;
 
 import com.ctb.api.components.other.dao.RecipeIngredient;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
+import com.ctb.other.DB;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "ingredient")
+@Table(name = DB.INGREDIENT)
 public class IngredientDAO {
 
 	@Id

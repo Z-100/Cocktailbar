@@ -5,6 +5,8 @@ import com.ctb.api.components.account.dto.AccountDTO;
 import com.ctb.api.components.account.services.mapper.AAccountMapper;
 import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.api.service.crud.account.RegisterNewAccountService;
+import com.ctb.other.API;
+import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
 import com.ctb.service.validation.IPasswordValidationService;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping(URL.ACCOUNT)
 @AllArgsConstructor
 public class AccountController {
 
@@ -25,7 +27,7 @@ public class AccountController {
 	private final IPasswordValidationService pwValidation;
 	private final RegisterNewAccountService registerAccount;
 
-	@GetMapping("/login")
+	@GetMapping(API.LOGIN)
 	public AccountDTO login(
 			@RequestHeader("email") final String email,
 			@RequestHeader("password") final String password) {
@@ -35,7 +37,7 @@ public class AccountController {
 		return accountFromDB != null ? mapper.toDTO(accountFromDB) : null;
 	}
 
-	@GetMapping("/register")
+	@GetMapping(API.REGISTER)
 	public JsonBoolean register(
 			@RequestHeader final String email,
 			@RequestHeader final String password) {
@@ -44,20 +46,14 @@ public class AccountController {
 				new JsonBoolean(true) : new JsonBoolean(false);
 	}
 
-	@GetMapping("/delete")
+	@GetMapping(API.DELETE)
 	public List<RecipeDTO> deleteAccount() {
 
 		return null;
 	}
 
-	@GetMapping("/update")
+	@GetMapping(API.UPDATE)
 	public List<RecipeDTO> updateAccount() {
-
-		return null;
-	}
-
-	@GetMapping("/delete")
-	public List<RecipeDTO> deleteRecipe() {
 
 		return null;
 	}

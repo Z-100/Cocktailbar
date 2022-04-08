@@ -1,5 +1,6 @@
 package com.ctb.api.components.account.dto;
 
+import com.ctb.api.components.feedback.dto.FeedbackDTO;
 import com.ctb.api.components.recipe.dto.RecipeDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,6 @@ public class AccountDTO {
 	private String email;
 
 	private List<RecipeDTO> recipes;
+
+	private List<FeedbackDTO> feedbacks;
 }

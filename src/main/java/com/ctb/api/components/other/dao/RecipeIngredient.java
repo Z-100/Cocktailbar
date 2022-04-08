@@ -2,7 +2,7 @@ package com.ctb.api.components.other.dao;
 
 import com.ctb.api.components.ingredient.dao.IngredientDAO;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
-import lombok.AllArgsConstructor;
+import com.ctb.other.DB;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "recipe_ingredient")
+@Table(name = DB.RECIPE_INGREDIENT)
 @NoArgsConstructor
 public class RecipeIngredient {
 
