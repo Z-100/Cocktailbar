@@ -5,7 +5,7 @@ import com.ctb.api.components.recipe.dto.RecipeDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public abstract class RecipeMapper {
+public abstract class ARecipeMapper {
 
 	abstract public RecipeDTO toDTO(RecipeDAO entity);
 

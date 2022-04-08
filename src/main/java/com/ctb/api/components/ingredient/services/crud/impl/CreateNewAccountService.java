@@ -1,8 +1,8 @@
-package com.ctb.api.service.crud.account.impl;
+package com.ctb.api.components.ingredient.services.crud.impl;
 
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
-import com.ctb.api.service.crud.account.ICreateNewAccountService;
+import com.ctb.api.components.ingredient.services.crud.ICreateNewAccountService;
 import com.ctb.service.generate.ITokenGenerationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.ctb.api.components.feedback.mapper;
+package com.ctb.api.components.feedback.services.mapper;
 
 import com.ctb.api.components.feedback.dao.FeedbackDAO;
 import com.ctb.api.components.feedback.dto.FeedbackDTO;

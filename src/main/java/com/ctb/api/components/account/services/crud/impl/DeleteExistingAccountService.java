@@ -1,8 +1,8 @@
-package com.ctb.api.service.crud.account.impl;
+package com.ctb.api.components.account.services.crud.impl;
 
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
-import com.ctb.api.service.crud.account.IDeleteExistingAccountService;
+import com.ctb.api.components.account.services.crud.IDeleteExistingAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

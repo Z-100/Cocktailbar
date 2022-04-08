@@ -1,4 +1,4 @@
-package com.ctb.api.service.crud.account;
+package com.ctb.api.components.account.services.crud;
 
 public interface IUpdateExistingAccountService {
 

@@ -1,10 +1,7 @@
 package com.ctb.api.components.account.controller;
 
 import com.ctb.api.components.account.dto.AccountDTO;
-import com.ctb.api.service.crud.account.ICreateNewAccountService;
-import com.ctb.api.service.crud.account.IDeleteExistingAccountService;
-import com.ctb.api.service.crud.account.IReadExistingAccountService;
-import com.ctb.api.service.crud.account.IUpdateExistingAccountService;
+import com.ctb.api.components.account.services.crud.*;
 import com.ctb.other.API;
 import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
