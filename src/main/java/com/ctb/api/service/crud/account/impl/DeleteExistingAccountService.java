@@ -1,7 +1,8 @@
-package com.ctb.api.service.crud.account;
+package com.ctb.api.service.crud.account.impl;
 
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
+import com.ctb.api.service.crud.account.IDeleteExistingAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @AllArgsConstructor
 @Component
-public class DeleteExistingAccountService {
+public class DeleteExistingAccountService implements IDeleteExistingAccountService {
 
 	private final IAccountRepository accountRepository;
 
