@@ -2,10 +2,7 @@ package com.ctb.api.components.ingredient.dao;
 
 import com.ctb.api.components.other.dao.RecipeIngredient;
 import com.ctb.other.DB;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;

@@ -4,9 +4,7 @@ import com.ctb.api.components.feedback.dao.FeedbackDAO;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
 import com.ctb.other.DB;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;

@@ -2,9 +2,11 @@ package com.ctb.service.generate.impl;
 
 import com.ctb.service.generate.ITokenGenerationService;
 import com.ctb.service.stupidity.ITokenGenerationHelperService;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class TokenGenerationService implements ITokenGenerationService {
 
 	@Override

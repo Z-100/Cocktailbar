@@ -3,7 +3,6 @@ package com.ctb.api.components.feedback.dao;
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
 import com.ctb.other.DB;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;

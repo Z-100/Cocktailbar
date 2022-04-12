@@ -13,8 +13,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.util.List;
 
 @Component
-@EnableTransactionManagement
 @AllArgsConstructor
+@EnableTransactionManagement
 public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 
 	private final IAccountRepository accountRepository;
@@ -77,3 +77,4 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 				&& newAccount.getUsername().equals(savedInDatabase.getUsername());
 	}
 }
+
