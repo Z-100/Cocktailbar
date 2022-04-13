@@ -2,5 +2,5 @@ package com.ctb.api.components.feedback.services.crud;
 
 public interface ICreateNewFeedbackService {
 
-	String registerNewUser(String email, String password, String username);
+	byte insertNewFeedback(String email, String fkRecipeId, String title, String description, String rating);
 }

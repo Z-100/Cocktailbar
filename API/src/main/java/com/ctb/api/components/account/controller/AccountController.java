@@ -1,5 +1,6 @@
 package com.ctb.api.components.account.controller;
 
+import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.dto.AccountDTO;
 import com.ctb.api.components.account.services.crud.*;
 import com.ctb.api.components.account.services.crud.ICreateNewAccountService;
@@ -7,6 +8,7 @@ import com.ctb.api.components.account.services.crud.IDeleteExistingAccountServic
 import com.ctb.api.components.account.services.crud.IReadExistingAccountService;
 import com.ctb.api.components.account.services.crud.IUpdateExistingAccountService;
 import com.ctb.other.API;
+import com.ctb.other.ERROR;
 import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
 import com.ctb.other.replacement.JsonString;
@@ -29,17 +31,16 @@ public class AccountController {
 	private final IDeleteExistingAccountService deleteService;
 
 
+	// ? Returns Token
 	@PostMapping(API.LOGIN)
-	public JsonBoolean login(
+	public JsonString login(
 			@RequestHeader("email") final String email,
-			@RequestHeader("token") final String token,
 			@RequestHeader("password") final String password) {
 
-		if (!tokValidation.validate(email, token))
-			return new JsonBoolean(false);
+		AccountDAO accountDAO = pwValidation.validate(email, password);
 
-		return pwValidation.validate(email, password) != null ?
-				new JsonBoolean(true) : new JsonBoolean(false);
+		return accountDAO != null ?
+				new JsonString(accountDAO.getToken()) : new JsonString(ERROR.INVALID_PASSWORD);
 	}
 
 	@PostMapping(API.REGISTER)

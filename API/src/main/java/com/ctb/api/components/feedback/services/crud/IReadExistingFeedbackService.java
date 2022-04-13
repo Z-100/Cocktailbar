@@ -1,8 +1,10 @@
 package com.ctb.api.components.feedback.services.crud;
 
-import com.ctb.api.components.account.dto.AccountDTO;
+import com.ctb.api.components.feedback.dto.FeedbackDTO;
+
+import java.util.List;
 
 public interface IReadExistingFeedbackService {
 
-	AccountDTO getAccount(String username);
+	List<FeedbackDTO> getFeedbacks(Object searchTerm);
 }

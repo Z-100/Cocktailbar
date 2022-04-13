@@ -1,7 +1,7 @@
 package com.ctb.api.components.feedback.services.crud.impl;
 
-import com.ctb.api.components.account.dao.AccountDAO;
-import com.ctb.api.components.account.repository.IAccountRepository;
+import com.ctb.api.components.feedback.dao.FeedbackDAO;
+import com.ctb.api.components.feedback.repository.IFeedbackRepository;
 import com.ctb.api.components.feedback.services.crud.IDeleteExistingFeedbackService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,19 +12,19 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Component
 public class DeleteExistingFeedbackService implements IDeleteExistingFeedbackService {
 
-	private final IAccountRepository accountRepository;
+	private final IFeedbackRepository feedbackRepository;
 
-	public boolean delete(AccountDAO account) {
+	public byte delete(String s_id) {
+		Long id = Long.valueOf(s_id);
 
-		if (account == null)
-			return false;
+		FeedbackDAO feedback = feedbackRepository.findByFeedbackId(id);
 
-		return createNewTransaction(account);
+		return (byte) (createNewTransaction(feedback) ? 1 : 0);
 	}
 
 	@Transactional
-	boolean createNewTransaction(AccountDAO account) {
-		if (deleteAccount(account)) {
+	boolean createNewTransaction(FeedbackDAO feedback) {
+		if (deleteFeedback(feedback)) {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -32,19 +32,17 @@ public class DeleteExistingFeedbackService implements IDeleteExistingFeedbackSer
 		}
 	}
 
-	private boolean deleteAccount(AccountDAO account) {
+	private boolean deleteFeedback(FeedbackDAO feedback) {
 
-		account.getRecipes().forEach(r -> r.setFeedbacks(null));
-		account.getRecipes().forEach(r -> r.getRecipes().forEach(i -> i = null));
-		account.setRecipes(null);
-		account.setFeedbacks(null);
+		feedback.setFkAccountId(null);
+		feedback.setFkRecipeId(null);
 
-		accountRepository.delete(account);
+		feedbackRepository.delete(feedback);
 
-		return accountDeletedCorrectly(account);
+		return feedbackDeletedCorrectly(feedback);
 	}
 
-	private boolean accountDeletedCorrectly(AccountDAO account) {
-		return accountRepository.findByEmail(account.getEmail()) == null;
+	private boolean feedbackDeletedCorrectly(FeedbackDAO feedback) {
+		return feedbackRepository.findByFeedbackId(feedback.getId()) == null;
 	}
 }

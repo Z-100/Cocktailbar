@@ -37,3 +37,9 @@ class DB {
         const val RECIPE_INGREDIENT: String = "recipe_ingredient"
     }
 }
+
+class ERROR {
+    companion object Factory {
+        const val INVALID_PASSWORD: String = "Invalid username and/or password"
+    }
+}

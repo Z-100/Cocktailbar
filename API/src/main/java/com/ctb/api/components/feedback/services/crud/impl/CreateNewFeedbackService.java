@@ -1,16 +1,17 @@
 package com.ctb.api.components.feedback.services.crud.impl;
 
-import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
+import com.ctb.api.components.feedback.dao.FeedbackDAO;
+import com.ctb.api.components.feedback.repository.IFeedbackRepository;
 import com.ctb.api.components.feedback.services.crud.ICreateNewFeedbackService;
-import com.ctb.service.generate.ITokenGenerationService;
+import com.ctb.api.components.recipe.repository.IRecipeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.List;
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -18,42 +19,47 @@ import java.util.List;
 public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 
 	private final IAccountRepository accountRepository;
+	private final IFeedbackRepository feedbackRepository;
+	private final IRecipeRepository recipeRepository;
 
-	private final ITokenGenerationService tokenGenerator;
+	public byte insertNewFeedback(String email, String s_fkRecipeId, String title, String description, String s_rating) {
 
-	public String registerNewUser(String email, String password, String username) {
+		final Long fkRecipeId = Long.valueOf(s_fkRecipeId);
 
-		if (emailAlreadyRegistered(email))
-			return null;
+		if (feedbackAlreadyExists(email, fkRecipeId))
+			return 0;
 
-		String token = tokenGenerator.generate();
+		int rating = Integer.parseInt(s_rating);
 
-		if (token == null)
-			return null;
+		FeedbackDAO newFeedback = new FeedbackDAO();
+		newFeedback.setTitle(title);
+		newFeedback.setDescription(description);
+		newFeedback.setRating(rating);
+		newFeedback.setFkRecipeId(recipeRepository.findByRecipeId(fkRecipeId));
+		newFeedback.setFkAccountId(accountRepository.findByEmail(email));
 
-		AccountDAO newAccount = new AccountDAO();
+		if (createNewTransaction(newFeedback))
+			return 1;
 
-		newAccount.setEmail(email);
-		newAccount.setPassword(password);
-		newAccount.setUsername(username);
-		newAccount.setToken(token);
-
-		newAccount.setFeedbacks(List.of());
-		newAccount.setRecipes(List.of());
-
-		if (createNewTransaction(newAccount))
-			return token;
-
-		return null;
+		return 0;
 	}
 
-	private boolean emailAlreadyRegistered(String email) {
-		return accountRepository.findByEmail(email) != null;
+	private Boolean feedbackAlreadyExists(String email, Long fkRecipeId) {
+		final Long accountId = accountRepository.findByEmail(email).getId();
+
+		final Boolean[] alreadyExists = { false };
+
+		recipeRepository.findByRecipeId(fkRecipeId).getFeedbacks().forEach(f -> {
+			if (Objects.equals(f.getFkAccountId().getId(), accountId))
+				 alreadyExists[0] = true;
+		});
+
+		return alreadyExists[0];
 	}
 
 	@Transactional
-	boolean createNewTransaction(AccountDAO newAccount) {
-		if (saveAccountToDatabase(newAccount)) {
+	boolean createNewTransaction(FeedbackDAO newFeedback) {
+		if (saveFeedbackToDatabase(newFeedback)) {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -61,20 +67,23 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 		}
 	}
 
-	private boolean saveAccountToDatabase(AccountDAO newAccount) {
+	private boolean saveFeedbackToDatabase(FeedbackDAO newFeedback) {
+		feedbackRepository.save(newFeedback);
 
-		accountRepository.save(newAccount);
-
-		return accountSavedCorrectly(newAccount);
+		return feedbackSavedCorrectly(newFeedback);
 	}
 
-	private boolean accountSavedCorrectly(AccountDAO newAccount) {
-		AccountDAO savedInDatabase = accountRepository.findByEmail(newAccount.getEmail());
+	private boolean feedbackSavedCorrectly(FeedbackDAO newFeedback) {
+		try {
+			FeedbackDAO savedInDatabase = feedbackRepository.findByFeedbackId(newFeedback.getId());
 
-		return newAccount.getEmail().equals(savedInDatabase.getEmail())
-				&& newAccount.getPassword().equals(savedInDatabase.getPassword())
-				&& newAccount.getToken().equals(savedInDatabase.getToken())
-				&& newAccount.getUsername().equals(savedInDatabase.getUsername());
+			return newFeedback.getTitle().equals(savedInDatabase.getTitle())
+					&& newFeedback.getDescription().equals(savedInDatabase.getDescription())
+					&& newFeedback.getFkRecipeId().equals(savedInDatabase.getFkRecipeId())
+					&& newFeedback.getFkAccountId().equals(savedInDatabase.getFkAccountId());
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
-
