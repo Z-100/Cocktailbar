@@ -3,7 +3,6 @@ package com.ctb.api.components.ingredient.controller;
 import com.ctb.api.components.ingredient.dto.IngredientDTO;
 import com.ctb.other.API;
 import com.ctb.other.URL;
-import com.ctb.other.replacement.JsonBoolean;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,22 +16,13 @@ import java.util.List;
 public class IngredientController {
 
 	@GetMapping(API.INSERT)
-	public JsonBoolean insertNewIngredient() {
-
-		return null;
-	}
+	public void insertNewIngredient() {}
 
 	@GetMapping(API.UPDATE)
-	public JsonBoolean updateIngredient() {
-
-		return null;
-	}
+	public void updateIngredient() {}
 
 	@GetMapping(API.DELETE)
-	public JsonBoolean deleteIngredient() {
-
-		return null;
-	}
+	public void deleteIngredient() {}
 
 	@GetMapping(API.GET + API.ALL)
 	public List<IngredientDTO> getAllIngredients() {

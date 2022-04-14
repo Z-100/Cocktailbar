@@ -9,6 +9,7 @@ import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.api.components.recipe.repository.IRecipeRepository;
 import com.ctb.api.components.recipe.services.mapper.ARecipeMapper;
 import com.ctb.api.components.recipe.services.crud.ICreateNewRecipeService;
+import com.ctb.service.log.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class CreateNewRecipeService implements ICreateNewRecipeService {
 			ingredients.add(mapper.readValue(json_ingredients, RecipeIngredient.class));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
+			Logger.log("ERROR", "Something went wrong whilst reading json string");
 			return false;
 		}
 
@@ -66,6 +68,7 @@ public class CreateNewRecipeService implements ICreateNewRecipeService {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction rollback. Error whilst persisting recipe");
 			return false;
 		}
 	}

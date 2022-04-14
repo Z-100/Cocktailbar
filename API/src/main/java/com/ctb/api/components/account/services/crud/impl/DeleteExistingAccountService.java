@@ -3,6 +3,7 @@ package com.ctb.api.components.account.services.crud.impl;
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
 import com.ctb.api.components.account.services.crud.IDeleteExistingAccountService;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ public class DeleteExistingAccountService implements IDeleteExistingAccountServi
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction Rollback. Error whilst deleting account");
 			return false;
 		}
 	}

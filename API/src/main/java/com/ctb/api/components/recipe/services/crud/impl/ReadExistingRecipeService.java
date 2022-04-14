@@ -5,6 +5,7 @@ import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.api.components.recipe.repository.IRecipeRepository;
 import com.ctb.api.components.recipe.services.crud.IReadExistingRecipeService;
 import com.ctb.api.components.recipe.services.mapper.ARecipeMapper;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,14 +25,22 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 			case "user" -> getAllFromUser(s_fkAccountId);
 			case "recommended" -> getRecommended();
 			case "latest" -> getLatestTen();
-			default -> null;
+			default -> handleError("Invalid type " + type);
 		};
+	}
+
+	private List<RecipeDTO> handleError(String message) {
+		Logger.log("ERROR", message);
+		return null;
 	}
 
 	private List<RecipeDTO> getAll() {
 		List<?> recipeDTOs = recipeRepository.findAll();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+
+		if (recipeDTOs.isEmpty())
+			handleError("ALL recipes not found");
 
 		return (List<RecipeDTO>) recipeDTOs;
 	}
@@ -41,6 +50,9 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 			List<?> recipeDTOs = recipeRepository.findAllByFkAccountId(Long.valueOf(s_fkAccountId));
 
 			recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+
+			if (recipeDTOs.isEmpty())
+				handleError("ALL recipes FROM USER not found");
 
 			return (List<RecipeDTO>) recipeDTOs;
 		} catch (NumberFormatException e) {
@@ -54,6 +66,9 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
 
+		if (recipeDTOs.isEmpty())
+			handleError("RECOMMENDED recipes not found");
+
 		return (List<RecipeDTO>) recipeDTOs;
 	}
 
@@ -61,6 +76,9 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 		List<?> recipeDTOs = recipeRepository.queryLast10();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+
+		if (recipeDTOs.isEmpty())
+			handleError("LATEST TEN recipes not found");
 
 		return (List<RecipeDTO>) recipeDTOs;
 	}

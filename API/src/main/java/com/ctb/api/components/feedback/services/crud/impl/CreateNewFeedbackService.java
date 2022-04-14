@@ -5,6 +5,7 @@ import com.ctb.api.components.feedback.dao.FeedbackDAO;
 import com.ctb.api.components.feedback.repository.IFeedbackRepository;
 import com.ctb.api.components.feedback.services.crud.ICreateNewFeedbackService;
 import com.ctb.api.components.recipe.repository.IRecipeRepository;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -26,8 +27,10 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 
 		final Long fkRecipeId = Long.valueOf(s_fkRecipeId);
 
-		if (feedbackAlreadyExists(email, fkRecipeId))
+		if (feedbackAlreadyExists(email, fkRecipeId)) {
+			Logger.log("ERROR", "Feedback already exists on recipe by user with email " + email);
 			return 0;
+		}
 
 		int rating = Integer.parseInt(s_rating);
 
@@ -63,6 +66,7 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction Rollback. Error whilst persisting feedback");
 			return false;
 		}
 	}

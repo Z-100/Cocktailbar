@@ -7,7 +7,6 @@ import com.ctb.api.components.feedback.services.crud.IReadExistingFeedbackServic
 import com.ctb.other.API;
 import com.ctb.other.Response;
 import com.ctb.other.URL;
-import com.ctb.other.replacement.JsonBoolean;
 import com.ctb.service.validation.ITokenValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -85,7 +84,5 @@ public class FeedbackController {
 	}
 
 	//	@PostMapping(API.UPDATE) TODO: Implement update feedback
-	public JsonBoolean updateFeedback() {
-		return null;
-	}
+	public void updateFeedback() {}
 }

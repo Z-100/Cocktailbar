@@ -5,6 +5,7 @@ import com.ctb.api.components.account.dto.AccountDTO;
 import com.ctb.api.components.account.repository.IAccountRepository;
 import com.ctb.api.components.account.services.mapper.AAccountMapper;
 import com.ctb.api.components.account.services.crud.IReadExistingAccountService;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,10 @@ public class ReadExistingAccountService implements IReadExistingAccountService {
 
 		AccountDAO accountFromDB = repository.findByUsername(username);
 
-		if (accountFromDB == null)
+		if (accountFromDB == null) {
+			Logger.log("ERROR", "No account was found with username " + username);
 			return null;
+		}
 
 		return mapper.toDTO(accountFromDB);
 	}

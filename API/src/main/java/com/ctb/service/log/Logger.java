@@ -1,4 +1,4 @@
-package com.ctb.other.log;
+package com.ctb.service.log;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

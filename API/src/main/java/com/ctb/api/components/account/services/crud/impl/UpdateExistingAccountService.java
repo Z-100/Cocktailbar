@@ -3,6 +3,7 @@ package com.ctb.api.components.account.services.crud.impl;
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
 import com.ctb.api.components.account.services.crud.IUpdateExistingAccountService;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class UpdateExistingAccountService implements IUpdateExistingAccountServi
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction Rollback. Error whilst persisting account");
 			return false;
 		}
 	}

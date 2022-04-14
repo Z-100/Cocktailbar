@@ -1,8 +1,7 @@
 package com.ctb.service.generate.impl;
 
-import com.ctb.other.log.Logger;
+import com.ctb.service.log.Logger;
 import com.ctb.service.generate.ITokenGenerationService;
-import com.ctb.service.stupidity.ITokenGenerationHelperService;
 import com.ctb.service.stupidity.impl.TokenGenerationHelperService;
 import org.springframework.stereotype.Component;
 

@@ -39,12 +39,6 @@ class DB {
     }
 }
 
-class INFO {
-    companion object Factory {
-        const val PERSIST_SUCCESS = "Account persisted successfully"
-    }
-}
-
 class Response {
     companion object Factory {
         const val INVALID_PASSWORD: String = "Invalid username and/or password"

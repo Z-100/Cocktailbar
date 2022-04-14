@@ -3,6 +3,7 @@ package com.ctb.api.components.feedback.services.crud.impl;
 import com.ctb.api.components.feedback.dao.FeedbackDAO;
 import com.ctb.api.components.feedback.repository.IFeedbackRepository;
 import com.ctb.api.components.feedback.services.crud.IDeleteExistingFeedbackService;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ public class DeleteExistingFeedbackService implements IDeleteExistingFeedbackSer
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Error whilst deleting feedback");
 			return false;
 		}
 	}

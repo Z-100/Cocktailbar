@@ -3,6 +3,7 @@ package com.ctb.api.components.recipe.services.crud.impl;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
 import com.ctb.api.components.recipe.repository.IRecipeRepository;
 import com.ctb.api.components.recipe.services.crud.IDeleteExistingRecipeService;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class DeleteExistingRecipeService implements IDeleteExistingRecipeService
 			recipeId = Long.valueOf(s_recipeId);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			Logger.log("ERROR", "Invalid recipe id " + s_recipeId);
 			return false;
 		}
 
@@ -34,6 +36,7 @@ public class DeleteExistingRecipeService implements IDeleteExistingRecipeService
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction rollback. Error whilst deleting recipe");
 			return false;
 		}
 	}

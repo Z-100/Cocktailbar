@@ -6,6 +6,7 @@ import com.ctb.api.components.feedback.dto.FeedbackDTO;
 import com.ctb.api.components.feedback.repository.IFeedbackRepository;
 import com.ctb.api.components.feedback.services.crud.IReadExistingFeedbackService;
 import com.ctb.api.components.feedback.services.mapper.AFeedbackMapper;
+import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +34,10 @@ public class ReadExistingFeedbackService implements IReadExistingFeedbackService
 		if (searchTerm.getClass() == Long.class)
 			feedbackDAOs = repository.findByFkAccountId(accountRepository.findByEmail(String.valueOf(searchTerm)).getId());
 
-		if (feedbackDAOs == null)
+		if (feedbackDAOs == null) {
+			Logger.log("ERROR", "Requested feedbacks not found");
 			return null;
+		}
 
 		feedbackDAOs.forEach(f -> feedbackDTOs.add(mapper.toDTO(f)));
 

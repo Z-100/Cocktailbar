@@ -2,7 +2,7 @@ package com.ctb.service.validation.impl;
 
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
-import com.ctb.other.exception.PrintExceptionService;
+import com.ctb.service.log.Logger;
 import com.ctb.service.validation.IPasswordValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,17 +14,17 @@ public class PasswordValidationService implements IPasswordValidationService {
 	private final IAccountRepository repository;
 
 	public AccountDAO validate(String email, String password) {
-		try {
-			AccountDAO accountFromDB = repository.findByEmail(email);
 
-			if (accountFromDB == null)
-				throw new NullPointerException("[ERROR] Failed to retrieve account with email ");
+		AccountDAO accountFromDB = repository.findByEmail(email);
 
-			if (accountFromDB.getEmail().equals(email) && accountFromDB.getPassword().equals(password))
-				return accountFromDB;
-		} catch (NullPointerException e) {
-			PrintExceptionService.print(e.getMessage() + email, e.getStackTrace());
+		if (accountFromDB == null) {
+			Logger.log("ERROR", "Failed to retrieve account with email " + email);
+			return null;
 		}
+
+		if (accountFromDB.getEmail().equals(email) && accountFromDB.getPassword().equals(password))
+			return accountFromDB;
+
 		return null;
 	}
 }
