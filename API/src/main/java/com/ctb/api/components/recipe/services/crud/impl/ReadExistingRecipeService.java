@@ -61,7 +61,7 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	}
 
 	private List<RecipeDTO> getRecommended() {
-		List<?> recipeDTOs = recipeRepository.getAllOrderByRandomLimitTen();
+		List<?> recipeDTOs = recipeRepository.getTop10OrderByRand();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
 
@@ -72,7 +72,7 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	}
 
 	private List<RecipeDTO> getLatestTen() {
-		List<?> recipeDTOs = recipeRepository.getAllOrderByIdDescLimitFive();
+		List<?> recipeDTOs = recipeRepository.getTop10OrderByIdDesc();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
 
