@@ -45,8 +45,15 @@ class INFO {
     }
 }
 
-class ERROR {
+class Response {
     companion object Factory {
         const val INVALID_PASSWORD: String = "Invalid username and/or password"
+        const val INVALID_TOKEN: String = "Invalid token"
+        const val SOMETHING_WRONG: String = "Something went wrong"
+        const val NOT_FOUND: String = "Requested item not found"
+
+        const val SUCCESS_DELETE: String = "Deletion successful"
+        const val SUCCESS_INSERT: String = "Deletion successful"
+        const val SUCCESS_UPDATE: String = "Deletion successful"
     }
 }

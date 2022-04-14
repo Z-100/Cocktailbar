@@ -5,6 +5,7 @@ import com.ctb.api.components.feedback.services.crud.ICreateNewFeedbackService;
 import com.ctb.api.components.feedback.services.crud.IDeleteExistingFeedbackService;
 import com.ctb.api.components.feedback.services.crud.IReadExistingFeedbackService;
 import com.ctb.other.API;
+import com.ctb.other.Response;
 import com.ctb.other.URL;
 import com.ctb.other.replacement.JsonBoolean;
 import com.ctb.service.validation.ITokenValidationService;
@@ -36,12 +37,12 @@ public class FeedbackController {
 			@RequestHeader("rating") String rating) {
 
 		if (!tokValidation.validate(email, token))
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.INVALID_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (createService.insertNewFeedback(email, fkRecipeId, title, description, rating) == 0)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.SOMETHING_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(Response.SUCCESS_INSERT, HttpStatus.OK);
 	}
 
 	@PostMapping(API.DELETE)
@@ -51,12 +52,12 @@ public class FeedbackController {
 			@RequestHeader("feedback-id") String id) {
 
 		if (tokValidation.validate(email, token))
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.INVALID_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		if (deleteService.delete(id) == 1)
-			return new ResponseEntity<>(null, HttpStatus.OK);
+		if (deleteService.delete(id) == 0)
+			return new ResponseEntity<>(Response.SOMETHING_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(Response.SUCCESS_DELETE, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET + API.ALL) // "{accountId}"
@@ -66,7 +67,7 @@ public class FeedbackController {
 		List<FeedbackDTO> feedbacks = readService.getFeedbacks(accountId);
 
 		if (feedbacks == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return new ResponseEntity<>(feedbacks, HttpStatus.OK);
 	}
@@ -78,7 +79,7 @@ public class FeedbackController {
 		List<FeedbackDTO> feedbacks = readService.getFeedbacks(Long.valueOf(recipeId));
 
 		if (feedbacks == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return new ResponseEntity<>(feedbacks, HttpStatus.OK);
 	}

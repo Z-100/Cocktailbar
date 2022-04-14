@@ -6,6 +6,7 @@ import com.ctb.api.components.recipe.services.crud.IDeleteExistingRecipeService;
 import com.ctb.api.components.recipe.services.crud.IReadExistingRecipeService;
 import com.ctb.api.components.recipe.services.crud.IUpdateExistingRecipeService;
 import com.ctb.other.API;
+import com.ctb.other.Response;
 import com.ctb.other.URL;
 import com.ctb.service.validation.IPasswordValidationService;
 import com.ctb.service.validation.ITokenValidationService;
@@ -38,17 +39,12 @@ public class RecipeController {
 			@RequestHeader("ingredients") String json_ingredients) {
 
 		if (!tokValidation.validate(email, token))
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.INVALID_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (!createService.createNewRecipe(email, title, description, json_ingredients))
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.SOMETHING_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-//	@GetMapping(API.UPDATE) //TODO: Implement in future
-	public ResponseEntity<?> updateRecipe() {
-		return null;
+		return new ResponseEntity<>(Response.SUCCESS_INSERT, HttpStatus.OK);
 	}
 
 	@PostMapping(API.DELETE)
@@ -59,15 +55,15 @@ public class RecipeController {
 			@RequestHeader("recipe-id") String recipeId) {
 
 		if (!tokValidation.validate(email, token))
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.INVALID_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (pwValidation.validate(email, password) == null)
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.INVALID_PASSWORD, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (!deleteService.delete(recipeId))
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.SOMETHING_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(Response.SUCCESS_DELETE, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET + API.ALL)
@@ -76,9 +72,9 @@ public class RecipeController {
 		List<RecipeDTO> recipes = readService.getRecipes("all", null);
 
 		if (recipes == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(recipes, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET + API.ALL) // "{accountId}"
@@ -87,9 +83,9 @@ public class RecipeController {
 		List<RecipeDTO> recipes = readService.getRecipes("user", id);
 
 		if (recipes == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(recipes, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET + API.RECOMMENDED)
@@ -98,9 +94,9 @@ public class RecipeController {
 		List<RecipeDTO> recipes = readService.getRecipes("recommended", null);
 
 		if (recipes == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(recipes, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET + API.LATEST)
@@ -109,8 +105,13 @@ public class RecipeController {
 		List<RecipeDTO> recipes = readService.getRecipes("latest", null);
 
 		if (recipes == null)
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(Response.NOT_FOUND, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(recipes, HttpStatus.OK);
+	}
+
+	//	@GetMapping(API.UPDATE) //TODO: Implement in future
+	public ResponseEntity<?> updateRecipe() {
+		return null;
 	}
 }
