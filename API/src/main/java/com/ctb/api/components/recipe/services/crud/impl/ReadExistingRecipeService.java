@@ -9,7 +9,6 @@ import com.ctb.service.log.Logger;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -62,7 +61,7 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	}
 
 	private List<RecipeDTO> getRecommended() {
-		List<?> recipeDTOs = recipeRepository.queryRandom10();
+		List<?> recipeDTOs = recipeRepository.getAllOrderByRandomLimitTen();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
 
@@ -73,7 +72,7 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	}
 
 	private List<RecipeDTO> getLatestTen() {
-		List<?> recipeDTOs = recipeRepository.queryLast10();
+		List<?> recipeDTOs = recipeRepository.getAllOrderByIdDescLimitFive();
 
 		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
 

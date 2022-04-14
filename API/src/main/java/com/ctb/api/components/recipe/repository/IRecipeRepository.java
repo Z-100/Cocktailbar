@@ -13,7 +13,7 @@ public interface IRecipeRepository extends CrudRepository<RecipeDAO, Long> {
 
 	List<RecipeDAO> findAll();
 
-	List<RecipeDAO> queryLast10();
+	List<RecipeDAO> getAllOrderByIdDescLimitFive();
 
-	List<RecipeDAO> queryRandom10();
+	List<RecipeDAO> getAllOrderByRandomLimitTen();
 }
