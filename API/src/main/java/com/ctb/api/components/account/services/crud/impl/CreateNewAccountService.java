@@ -3,6 +3,8 @@ package com.ctb.api.components.account.services.crud.impl;
 import com.ctb.api.components.account.dao.AccountDAO;
 import com.ctb.api.components.account.repository.IAccountRepository;
 import com.ctb.api.components.account.services.crud.ICreateNewAccountService;
+import com.ctb.other.INFO;
+import com.ctb.other.log.Logger;
 import com.ctb.service.generate.ITokenGenerationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,26 +25,28 @@ public class CreateNewAccountService implements ICreateNewAccountService {
 
 	public String registerNewUser(String email, String password, String username) {
 
-		if (emailAlreadyRegistered(email))
-			return null;
+		if (emailAlreadyRegistered(email)) {
+			Logger.log("ERROR", "E-Mail '" + email + "' already taken");
+		}
 
 		String token = tokenGenerator.generate();
 
-		if (token == null)
-			return null;
+		if (token == null) {
+			return Logger.log("ERROR", "Token could not be generated");
+		}
 
 		AccountDAO newAccount = new AccountDAO();
-
 		newAccount.setEmail(email);
 		newAccount.setPassword(password);
 		newAccount.setUsername(username);
 		newAccount.setToken(token);
-
 		newAccount.setFeedbacks(List.of());
 		newAccount.setRecipes(List.of());
 
-		if (createNewTransaction(newAccount))
+		if (createNewTransaction(newAccount)) {
+			Logger.log("INFO", INFO.PERSIST_SUCCESS);
 			return token;
+		}
 
 		return null;
 	}
@@ -57,6 +61,7 @@ public class CreateNewAccountService implements ICreateNewAccountService {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			Logger.log("ERROR", "Transaction Rollback. Error while persisting account");
 			return false;
 		}
 	}

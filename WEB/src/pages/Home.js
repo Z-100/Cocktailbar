@@ -1,13 +1,14 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+
+import Drink from "../components/Drink"
 
 function Home() {
-    let navigate = useNavigate();
+    let req = Drink;
 
     return(
         <div>
             <h1>Home</h1>
-            <button onClick={() => {navigate("/login")}}>To Login</button>
+            <button onClick={() => {req()}}>Request</button>
         </div>
     );
 }

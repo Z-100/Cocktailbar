@@ -15,7 +15,10 @@ import com.ctb.other.replacement.JsonString;
 import com.ctb.service.validation.IPasswordValidationService;
 import com.ctb.service.validation.ITokenValidationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(URL.ACCOUNT)
@@ -44,14 +47,17 @@ public class AccountController {
 	}
 
 	@PostMapping(API.REGISTER)
-	public JsonString register(
-			@RequestHeader final String email,
-			@RequestHeader final String password,
-			@RequestHeader final String username) {
+	public ResponseEntity<?> register(
+			@RequestHeader("email") final String email,
+			@RequestHeader("password") final String password,
+			@RequestHeader("username") final String username) {
 
-		String token = createService.registerNewUser(email, password, username);
+		String responseToken = createService.registerNewUser(email, password, username);
 
-		return token != null ? new JsonString(token) : null;
+		if (responseToken == null)
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, responseToken);
+
+		return new ResponseEntity<>(new JsonString(responseToken), HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET)

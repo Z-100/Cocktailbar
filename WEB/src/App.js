@@ -4,24 +4,25 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Error from "./pages/Error";
+import Footer from "./components/Footer"
+import Navbar from "./components/Navbar";
+import Register from "./pages/Register";
 
 export default function App() {
     return (
         <Router>
-            <nav>
-                <Link to="/"> Home </Link>
-                <Link to="/login"> Login </Link>
-                <Link to="/profile"> Profile </Link>
-                <Link to="/about"> About </Link>
-            </nav>
+            <Navbar/>
 
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/about" element={<About />} />
                 <Route path="*" element={<Error />} />
             </Routes>
+
+            <Footer />
         </Router>
     );
 }
