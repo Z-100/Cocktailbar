@@ -1,24 +1,18 @@
 package com.ctb.api.components.account.controller;
 
 import com.ctb.api.components.account.dao.AccountDAO;
-import com.ctb.api.components.account.dto.AccountDTO;
-import com.ctb.api.components.account.services.crud.*;
 import com.ctb.api.components.account.services.crud.ICreateNewAccountService;
 import com.ctb.api.components.account.services.crud.IDeleteExistingAccountService;
 import com.ctb.api.components.account.services.crud.IReadExistingAccountService;
 import com.ctb.api.components.account.services.crud.IUpdateExistingAccountService;
 import com.ctb.other.API;
-import com.ctb.other.ERROR;
 import com.ctb.other.URL;
-import com.ctb.other.replacement.JsonBoolean;
-import com.ctb.other.replacement.JsonString;
 import com.ctb.service.validation.IPasswordValidationService;
 import com.ctb.service.validation.ITokenValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(URL.ACCOUNT)
@@ -36,14 +30,16 @@ public class AccountController {
 
 	// ? Returns Token
 	@PostMapping(API.LOGIN)
-	public JsonString login(
+	public ResponseEntity<?> login(
 			@RequestHeader("email") final String email,
 			@RequestHeader("password") final String password) {
 
 		AccountDAO accountDAO = pwValidation.validate(email, password);
 
-		return accountDAO != null ?
-				new JsonString(accountDAO.getToken()) : new JsonString(ERROR.INVALID_PASSWORD);
+		if (accountDAO == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(accountDAO.getToken(), HttpStatus.OK);
 	}
 
 	@PostMapping(API.REGISTER)
@@ -52,34 +48,36 @@ public class AccountController {
 			@RequestHeader("password") final String password,
 			@RequestHeader("username") final String username) {
 
-		String responseToken = createService.registerNewUser(email, password, username);
+		String token = createService.registerNewUser(email, password, username);
 
-		if (responseToken == null)
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, responseToken);
+		if (token == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(new JsonString(responseToken), HttpStatus.OK);
+		return new ResponseEntity<>(token, HttpStatus.OK);
 	}
 
 	@GetMapping(API.GET)
-	public AccountDTO getAccount(@RequestParam("username") String username) {
-		return readService.getAccount(username);
+	public ResponseEntity<?> getAccount(@RequestParam("username") String username) {
+		return new ResponseEntity<>(readService.getAccount(username), HttpStatus.OK);
 	}
 
 	@PostMapping(API.DELETE)
-	public JsonBoolean deleteAccount(
+	public ResponseEntity<?> deleteAccount(
 			@RequestHeader("email") String email,
 			@RequestHeader("password") String password,
 			@RequestHeader("token") String token) {
 
 		if (!tokValidation.validate(email, token))
-			return new JsonBoolean(false);
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return deleteService.delete(pwValidation.validate(email, password)) ?
-				new JsonBoolean(true) : new JsonBoolean(false);
+		if (!deleteService.delete(pwValidation.validate(email, password)))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 
 	@PostMapping(API.UPDATE)
-	public JsonBoolean updateAccount(
+	public ResponseEntity<?> updateAccount(
 			@RequestHeader("email") String email,
 			@RequestHeader("password") String password,
 			@RequestHeader("token") String token,
@@ -87,13 +85,15 @@ public class AccountController {
 			@RequestHeader("new-password") String newPassword) {
 
 		if (!tokValidation.validate(email, token))
-			return null;
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (pwValidation.validate(email, password) == null)
-			return null;
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return updateService.update(email, newEmail, newPassword) ?
-				new JsonBoolean(true) : new JsonBoolean(false);
+		if (!updateService.update(email, newEmail, newPassword))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 }
 

@@ -35,7 +35,7 @@ public class DeleteExistingIngredientService implements IDeleteExistingIngredien
 	private boolean deleteAccount(AccountDAO account) {
 
 		account.getRecipes().forEach(r -> r.setFeedbacks(null));
-		account.getRecipes().forEach(r -> r.getRecipes().forEach(i -> i = null));
+		account.getRecipes().forEach(r -> r.getIngredients().forEach(i -> i = null));
 		account.setRecipes(null);
 		account.setFeedbacks(null);
 

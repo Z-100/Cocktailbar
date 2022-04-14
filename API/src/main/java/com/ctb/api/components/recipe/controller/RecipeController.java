@@ -1,10 +1,17 @@
 package com.ctb.api.components.recipe.controller;
 
 import com.ctb.api.components.recipe.dto.RecipeDTO;
+import com.ctb.api.components.recipe.services.crud.ICreateNewRecipeService;
+import com.ctb.api.components.recipe.services.crud.IDeleteExistingRecipeService;
+import com.ctb.api.components.recipe.services.crud.IReadExistingRecipeService;
+import com.ctb.api.components.recipe.services.crud.IUpdateExistingRecipeService;
 import com.ctb.other.API;
 import com.ctb.other.URL;
-import com.ctb.other.replacement.JsonBoolean;
+import com.ctb.service.validation.IPasswordValidationService;
+import com.ctb.service.validation.ITokenValidationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,39 +21,96 @@ import java.util.List;
 @AllArgsConstructor
 public class RecipeController {
 
-	@GetMapping(API.INSERT)
-	public JsonBoolean insertNewRecipe() {
+	private final IPasswordValidationService pwValidation;
+	private final ITokenValidationService tokValidation;
 
+	private final ICreateNewRecipeService createService;
+	private final IReadExistingRecipeService readService;
+	private final IUpdateExistingRecipeService updateService;
+	private final IDeleteExistingRecipeService deleteService;
+
+	@PostMapping(API.INSERT)
+	public ResponseEntity<?> insertNewRecipe(
+			@RequestHeader("email") String email,
+			@RequestHeader("token") String token,
+			@RequestHeader("title") String title,
+			@RequestHeader("description") String description,
+			@RequestHeader("ingredients") String json_ingredients) {
+
+		if (!tokValidation.validate(email, token))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		if (!createService.createNewRecipe(email, title, description, json_ingredients))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+//	@GetMapping(API.UPDATE) //TODO: Implement in future
+	public ResponseEntity<?> updateRecipe() {
 		return null;
 	}
 
-	@GetMapping(API.UPDATE)
-	public JsonBoolean updateRecipe() {
+	@PostMapping(API.DELETE)
+	public ResponseEntity<?> deleteRecipe(
+			@RequestHeader("email") String email,
+			@RequestHeader("password") String password,
+			@RequestHeader("token") String token,
+			@RequestHeader("recipe-id") String recipeId) {
 
-		return null;
-	}
+		if (!tokValidation.validate(email, token))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 
-	@GetMapping(API.DELETE)
-	public JsonBoolean deleteRecipe() {
+		if (pwValidation.validate(email, password) == null)
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return null;
+		if (!deleteService.delete(recipeId))
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping(API.GET + API.ALL)
-	public List<RecipeDTO> getAllRecipes() {
+	public ResponseEntity<?> getAllRecipes() {
 
-		return null;
+		List<RecipeDTO> recipes = readService.getRecipes("all", null);
+
+		if (recipes == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@GetMapping(API.GET + API.ALL + "{email}")
-	public List<RecipeDTO> getAllRecipesFromUser(@PathVariable String email) {
+	@GetMapping(API.GET + API.ALL) // "{accountId}"
+	public ResponseEntity<?> getAllRecipesFromUser(@RequestParam("account-id") String id) {
 
-		return null;
+		List<RecipeDTO> recipes = readService.getRecipes("user", id);
+
+		if (recipes == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping(API.GET + API.RECOMMENDED)
-	public List<RecipeDTO> getRecommendedRecipes() {
+	public ResponseEntity<?> getRecommendedRecipes() {
 
-		return null;
+		List<RecipeDTO> recipes = readService.getRecipes("recommended", null);
+
+		if (recipes == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@GetMapping(API.GET + API.LATEST)
+	public ResponseEntity<?> getLatestTenRecipes() {
+
+		List<RecipeDTO> recipes = readService.getRecipes("latest", null);
+
+		if (recipes == null)
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(recipes, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

@@ -59,12 +59,6 @@ public class FeedbackController {
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@PostMapping(API.UPDATE)
-	public JsonBoolean updateFeedback() {
-
-		return null;
-	}
-
 	@GetMapping(API.GET + API.ALL) // "{accountId}"
 	public ResponseEntity<?> getAllFeedbackFromAccount(
 			@RequestParam("accountId") String accountId) {
@@ -87,5 +81,10 @@ public class FeedbackController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return new ResponseEntity<>(feedbacks, HttpStatus.OK);
+	}
+
+	//	@PostMapping(API.UPDATE) TODO: Implement update feedback
+	public JsonBoolean updateFeedback() {
+		return null;
 	}
 }

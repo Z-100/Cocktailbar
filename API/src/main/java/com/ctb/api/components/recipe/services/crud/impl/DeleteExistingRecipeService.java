@@ -1,7 +1,7 @@
 package com.ctb.api.components.recipe.services.crud.impl;
 
-import com.ctb.api.components.account.dao.AccountDAO;
-import com.ctb.api.components.account.repository.IAccountRepository;
+import com.ctb.api.components.recipe.dao.RecipeDAO;
+import com.ctb.api.components.recipe.repository.IRecipeRepository;
 import com.ctb.api.components.recipe.services.crud.IDeleteExistingRecipeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,19 +12,25 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Component
 public class DeleteExistingRecipeService implements IDeleteExistingRecipeService {
 
-	private final IAccountRepository accountRepository;
+	private final IRecipeRepository recipeRepository;
 
-	public boolean delete(AccountDAO account) {
+	public boolean delete(String s_recipeId) {
 
-		if (account == null)
+		Long recipeId = -1L;
+
+		try {
+			recipeId = Long.valueOf(s_recipeId);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			return false;
+		}
 
-		return createNewTransaction(account);
+		return createNewTransaction(recipeId);
 	}
 
 	@Transactional
-	boolean createNewTransaction(AccountDAO account) {
-		if (deleteAccount(account)) {
+	boolean createNewTransaction(Long recipeId) {
+		if (deleteAccount(recipeId)) {
 			return true;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -32,19 +38,18 @@ public class DeleteExistingRecipeService implements IDeleteExistingRecipeService
 		}
 	}
 
-	private boolean deleteAccount(AccountDAO account) {
+	private boolean deleteAccount(Long recipeId) {
 
-		account.getRecipes().forEach(r -> r.setFeedbacks(null));
-		account.getRecipes().forEach(r -> r.getRecipes().forEach(i -> i = null));
-		account.setRecipes(null);
-		account.setFeedbacks(null);
+		RecipeDAO recipe = recipeRepository.findByRecipeId(recipeId);
+		recipe.setFeedbacks(null);
+		recipe.setIngredients(null);
 
-		accountRepository.delete(account);
+		recipeRepository.delete(recipe);
 
-		return accountDeletedCorrectly(account);
+		return accountDeletedCorrectly(recipe);
 	}
 
-	private boolean accountDeletedCorrectly(AccountDAO account) {
-		return accountRepository.findByEmail(account.getEmail()) == null;
+	private boolean accountDeletedCorrectly(RecipeDAO recipe) {
+		return recipeRepository.findByRecipeId(recipe.getId()) == null;
 	}
 }

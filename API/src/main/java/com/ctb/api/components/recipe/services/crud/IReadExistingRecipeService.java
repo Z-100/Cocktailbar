@@ -1,8 +1,10 @@
 package com.ctb.api.components.recipe.services.crud;
 
-import com.ctb.api.components.account.dto.AccountDTO;
+import com.ctb.api.components.recipe.dto.RecipeDTO;
+
+import java.util.List;
 
 public interface IReadExistingRecipeService {
 
-	AccountDTO getAccount(String username);
+	List<RecipeDTO> getRecipes(String type, String fkAccountId);
 }

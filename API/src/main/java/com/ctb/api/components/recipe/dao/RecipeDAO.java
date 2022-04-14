@@ -37,7 +37,7 @@ public class RecipeDAO {
 	@OneToMany(mappedBy = "fkRecipeId",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private List<RecipeIngredient> recipes;
+	private List<RecipeIngredient> ingredients;
 
 	@OneToMany(cascade = {CascadeType.ALL},
 			orphanRemoval = true,

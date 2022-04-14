@@ -25,6 +25,7 @@ class API {
 
         const val ALL: String = "-all"
         const val RECOMMENDED: String = "-recommended"
+        const val LATEST: String = "-latest"
     }
 }
 
@@ -35,12 +36,6 @@ class DB {
         const val INGREDIENT: String = "ingredient"
         const val FEEDBACK: String = "feedback"
         const val RECIPE_INGREDIENT: String = "recipe_ingredient"
-    }
-}
-
-class ERROR {
-    companion object Factory {
-//        const val
     }
 }
 
