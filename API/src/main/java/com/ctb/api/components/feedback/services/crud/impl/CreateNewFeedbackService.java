@@ -38,7 +38,7 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 		newFeedback.setTitle(title);
 		newFeedback.setDescription(description);
 		newFeedback.setRating(rating);
-		newFeedback.setFkRecipeId(recipeRepository.findByRecipeId(fkRecipeId));
+		newFeedback.setFkRecipeId(recipeRepository.getById(fkRecipeId));
 		newFeedback.setFkAccountId(accountRepository.findByEmail(email));
 
 		if (createNewTransaction(newFeedback))
@@ -52,7 +52,7 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 
 		final Boolean[] alreadyExists = { false };
 
-		recipeRepository.findByRecipeId(fkRecipeId).getFeedbacks().forEach(f -> {
+		recipeRepository.getById(fkRecipeId).getFeedbacks().forEach(f -> {
 			if (Objects.equals(f.getFkAccountId().getId(), accountId))
 				 alreadyExists[0] = true;
 		});
@@ -79,7 +79,7 @@ public class CreateNewFeedbackService implements ICreateNewFeedbackService {
 
 	private boolean feedbackSavedCorrectly(FeedbackDAO newFeedback) {
 		try {
-			FeedbackDAO savedInDatabase = feedbackRepository.findByFeedbackId(newFeedback.getId());
+			FeedbackDAO savedInDatabase = feedbackRepository.getById(newFeedback.getId());
 
 			return newFeedback.getTitle().equals(savedInDatabase.getTitle())
 					&& newFeedback.getDescription().equals(savedInDatabase.getDescription())

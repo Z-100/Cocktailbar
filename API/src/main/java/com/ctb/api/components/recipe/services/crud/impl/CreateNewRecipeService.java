@@ -1,13 +1,9 @@
 package com.ctb.api.components.recipe.services.crud.impl;
 
 import com.ctb.api.components.account.repository.IAccountRepository;
-import com.ctb.api.components.ingredient.dao.IngredientDAO;
-import com.ctb.api.components.ingredient.repository.IIngredientRepository;
 import com.ctb.api.components.other.dao.RecipeIngredient;
 import com.ctb.api.components.recipe.dao.RecipeDAO;
-import com.ctb.api.components.recipe.dto.RecipeDTO;
 import com.ctb.api.components.recipe.repository.IRecipeRepository;
-import com.ctb.api.components.recipe.services.mapper.ARecipeMapper;
 import com.ctb.api.components.recipe.services.crud.ICreateNewRecipeService;
 import com.ctb.service.log.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -81,7 +77,7 @@ public class CreateNewRecipeService implements ICreateNewRecipeService {
 	}
 
 	private boolean recipeSavedCorrectly(RecipeDAO recipe) {
-		RecipeDAO fromDatabase = recipeRepository.findByRecipeId(recipe.getId());
+		RecipeDAO fromDatabase = recipeRepository.getById(recipe.getId());
 
 		return recipe.getTitle().equals(fromDatabase.getTitle())
 				&& recipe.getDescription().equals(fromDatabase.getDescription());

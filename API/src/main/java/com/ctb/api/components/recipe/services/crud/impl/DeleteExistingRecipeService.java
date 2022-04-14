@@ -43,7 +43,7 @@ public class DeleteExistingRecipeService implements IDeleteExistingRecipeService
 
 	private boolean deleteAccount(Long recipeId) {
 
-		RecipeDAO recipe = recipeRepository.findByRecipeId(recipeId);
+		RecipeDAO recipe = recipeRepository.getById(recipeId);
 		recipe.setFeedbacks(null);
 		recipe.setIngredients(null);
 
@@ -53,6 +53,6 @@ public class DeleteExistingRecipeService implements IDeleteExistingRecipeService
 	}
 
 	private boolean accountDeletedCorrectly(RecipeDAO recipe) {
-		return recipeRepository.findByRecipeId(recipe.getId()) == null;
+		return recipeRepository.getById(recipe.getId()) == null;
 	}
 }

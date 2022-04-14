@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IRecipeRepository extends CrudRepository<RecipeDAO, Long> {
 
-	RecipeDAO findByRecipeId(Long id);
+	RecipeDAO getById(Long id);
 
 	List<RecipeDAO> findAllByFkAccountId(Long id);
 

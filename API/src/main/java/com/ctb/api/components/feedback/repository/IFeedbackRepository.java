@@ -13,5 +13,5 @@ public interface IFeedbackRepository extends CrudRepository<FeedbackDAO, Long> {
 
 	List<FeedbackDAO> findByFkRecipeId(Long fkRecipeId);
 
-	FeedbackDAO findByFeedbackId(Long id);
+	FeedbackDAO getById(Long id);
 }

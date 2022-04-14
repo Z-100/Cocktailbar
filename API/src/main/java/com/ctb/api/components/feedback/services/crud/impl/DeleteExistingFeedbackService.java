@@ -18,7 +18,7 @@ public class DeleteExistingFeedbackService implements IDeleteExistingFeedbackSer
 	public byte delete(String s_id) {
 		Long id = Long.valueOf(s_id);
 
-		FeedbackDAO feedback = feedbackRepository.findByFeedbackId(id);
+		FeedbackDAO feedback = feedbackRepository.getById(id);
 
 		return (byte) (createNewTransaction(feedback) ? 1 : 0);
 	}
@@ -45,6 +45,6 @@ public class DeleteExistingFeedbackService implements IDeleteExistingFeedbackSer
 	}
 
 	private boolean feedbackDeletedCorrectly(FeedbackDAO feedback) {
-		return feedbackRepository.findByFeedbackId(feedback.getId()) == null;
+		return feedbackRepository.getById(feedback.getId()) == null;
 	}
 }
