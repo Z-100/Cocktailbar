@@ -40,21 +40,23 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	}
 
 	private List<RecipeDTO> getAll() {
-		List<?> recipeDTOs = recipeRepository.findAll();
+		List<RecipeDAO> recipeDAOs = recipeRepository.findAll();
+		List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
-		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+		recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO((r))));
 
 		if (recipeDTOs.isEmpty())
 			handleError("ALL recipes not found");
 
-		return (List<RecipeDTO>) recipeDTOs;
+		return recipeDTOs;
 	}
 
 	private List<RecipeDTO> getAllFromUser(Long fkAccountId) {
 		try {
-			List<?> recipeDTOs = recipeRepository.getAllByFkAccountId(accountRepository.findById(fkAccountId).get());
+			List<RecipeDAO> recipeDAOs = recipeRepository.getAllByFkAccountId(accountRepository.findById(fkAccountId).get());
+			List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
-			recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+			recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO(r)));
 
 			if (recipeDTOs.isEmpty())
 				handleError("ALL recipes FROM USER not found");
@@ -71,7 +73,7 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 		long recipeCount = recipeRepository.count();
 		int rdm = (int) (Math.random() * recipeCount);
 
-		Page<RecipeDAO> recipeDAOsPage = recipeRepository.findAll(PageRequest.of(rdm, 10));
+		Page<RecipeDAO> recipeDAOsPage = recipeRepository.findAll(PageRequest.of(rdm, 5));
 
 		List<RecipeDTO> recipeDTOs = new ArrayList<>();
 		if (recipeDAOsPage.hasContent())
@@ -80,19 +82,18 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 		if (recipeDAOsPage.isEmpty())
 			handleError("RECOMMENDED recipes not found");
 
-
-
-		return (List<RecipeDTO>) recipeDTOs;
+		return recipeDTOs;
 	}
 
 	private List<RecipeDTO> getLatestTen() {
-		List<?> recipeDTOs = recipeRepository.getTop10ByOrderByIdDesc();
+		List<RecipeDAO> recipeDAOs = recipeRepository.getTop10ByOrderByIdDesc();
+		List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
-		recipeDTOs.forEach(r -> mapper.toDTO((RecipeDAO) r));
+		recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO(r)));
 
 		if (recipeDTOs.isEmpty())
 			handleError("LATEST TEN recipes not found");
 
-		return (List<RecipeDTO>) recipeDTOs;
+		return recipeDTOs;
 	}
 }
