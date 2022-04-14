@@ -47,7 +47,7 @@ class Response {
         const val NOT_FOUND: String = "Requested item not found"
 
         const val SUCCESS_DELETE: String = "Deletion successful"
-        const val SUCCESS_INSERT: String = "Deletion successful"
-        const val SUCCESS_UPDATE: String = "Deletion successful"
+        const val SUCCESS_INSERT: String = "Insertion successful"
+        const val SUCCESS_UPDATE: String = "Update successful"
     }
 }

@@ -59,9 +59,9 @@ public class FeedbackController {
 		return new ResponseEntity<>(Response.SUCCESS_DELETE, HttpStatus.OK);
 	}
 
-	@GetMapping(API.GET + API.ALL) // "{accountId}"
+	@GetMapping(API.GET + API.ALL + "/{account-id}")
 	public ResponseEntity<?> getAllFeedbackFromAccount(
-			@RequestParam("accountId") String accountId) {
+			@PathVariable("account-id") String accountId) {
 
 		List<FeedbackDTO> feedbacks = readService.getFeedbacks(accountId);
 
@@ -71,9 +71,9 @@ public class FeedbackController {
 		return new ResponseEntity<>(feedbacks, HttpStatus.OK);
 	}
 
-	@GetMapping(API.GET + API.ALL) // "{recipeId}"
+	@GetMapping(API.GET + API.ALL + "/{recipe-id}")
 	public ResponseEntity<?> getAllFeedbackFromRecipe(
-			@RequestParam("recipe-id") String recipeId) {
+			@PathVariable("recipe-id") String recipeId) {
 
 		List<FeedbackDTO> feedbacks = readService.getFeedbacks(Long.valueOf(recipeId));
 

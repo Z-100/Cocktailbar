@@ -77,8 +77,9 @@ public class RecipeController {
 		return new ResponseEntity<>(recipes, HttpStatus.OK);
 	}
 
-	@GetMapping(API.GET + API.ALL) // "{accountId}"
-	public ResponseEntity<?> getAllRecipesFromUser(@RequestParam("account-id") String id) {
+	@GetMapping(API.GET + API.ALL + "/{account-id}")
+	public ResponseEntity<?> getAllRecipesFromUser(
+			@PathVariable("account-id") String id) {
 
 		List<RecipeDTO> recipes = readService.getRecipes("user", id);
 

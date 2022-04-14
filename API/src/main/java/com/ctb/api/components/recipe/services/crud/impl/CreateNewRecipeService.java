@@ -45,14 +45,14 @@ public class CreateNewRecipeService implements ICreateNewRecipeService {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			Logger.log("ERROR", "Something went wrong whilst reading json string");
-			return false;
+//			return false;
 		}
 
 		RecipeDAO recipeDAO = new RecipeDAO();
 		recipeDAO.setTitle(title);
 		recipeDAO.setDescription(description);
 		recipeDAO.setFkAccountId(accountRepository.findByEmail(email));
-		recipeDAO.setIngredients(ingredients);
+		recipeDAO.setIngredients(List.of());
 		recipeDAO.setFeedbacks(List.of());
 
 		return createNewTransaction(recipeDAO);

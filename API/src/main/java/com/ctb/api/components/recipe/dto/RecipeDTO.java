@@ -18,8 +18,6 @@ public class RecipeDTO {
 
 	private String description;
 
-	private AccountDAO fkAccountId;
-
 	private List<RecipeIngredient> ingredients;
 
 	private List<FeedbackDTO> feedbacks;
