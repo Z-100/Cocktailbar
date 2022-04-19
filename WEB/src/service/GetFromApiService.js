@@ -1,30 +1,29 @@
 import Axios from 'axios';
+import React, {useEffect, useState} from 'react';
 
-const Register = (email, password, username) => {
+const Register = (username) => {
 
-    let url = "http://localhost:8080/account/register"
-    let response = "Process started";
+    let url = "http://localhost:8080/account/get?username=" + username
+    const [account, setAccount] = useState("");
 
-    let axiosConfig = {
+    let cfg = {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
             "Access-Control-Allow-Origin": "*",
-            'email': email,
-            'password': password,
-            'username': username,
         }
     };
 
-    Axios.post(url, {}, axiosConfig)
-        .then((res) => {
-            console.log("RESPONSE RECEIVED: ", res);
-            return("Account has been registered");
-        }).catch((err) => {
-            console.log("AXIOS ERROR: ", err);
-            return("Registering process failed");
-        })
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        Axios.get(url, cfg)
+            .then(response => setAccount(response.data));
+    }, []);
 
-    return(response)
+    console.log(account)
+    return {
+        username: account.username,
+        email: account.email,
+    }
 }
 
 export default Register;

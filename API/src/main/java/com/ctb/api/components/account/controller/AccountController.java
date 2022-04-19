@@ -33,10 +33,11 @@ public class AccountController {
 	// ? Returns Token
 	@PostMapping(API.LOGIN)
 	public ResponseEntity<?> login(
-			@RequestHeader("email") final String email,
+			@RequestHeader("key") final String key, //Email / username
+			@RequestHeader("is-uname") final String s_isUname,
 			@RequestHeader("password") final String password) {
 
-		AccountDAO accountDAO = pwValidation.validate(email, password);
+		AccountDAO accountDAO = pwValidation.validate(key, password, s_isUname);
 
 		if (accountDAO == null)
 			return new ResponseEntity<>(Response.INVALID_PASSWORD, HttpStatus.INTERNAL_SERVER_ERROR);
