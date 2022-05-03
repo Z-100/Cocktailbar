@@ -12,18 +12,19 @@ Create and View individual cocktails and their corresponding recipes!
 * As a member
     * Login
     * Logout
-    * Manage account
-    * Delete account
+    * Manage account*
+    * Delete account*
     * Upload new CR
     * View CR
-        * Search specific CR
+        * Search specific CR*
         * Get recommended CR
             * (Dashboard)
 
 * As a visitor
     * Register
+    * Login
     * View CR
-        * Search specific CR
+        * Search specific CR*
         * Get recommended CR
 
 ## Technical stuff
@@ -41,4 +42,5 @@ Create and View individual cocktails and their corresponding recipes!
 
 * CR => Cocktail recipe(s)
 * CTB => Cocktail Bar
-  
+
+\* Will be implemented when time doesn't run out
