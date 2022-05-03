@@ -1,6 +1,6 @@
-async function GetAccount(username) {
+async function GetFromUser(userName) {
 
-    let url = "http://localhost:8080/account/get?username=" + username
+    let url = "http://localhost:8080/recipe/get-all/" + userName
 
     return await fetch(url, {
         method: 'GET',
@@ -12,4 +12,4 @@ async function GetAccount(username) {
     })
 }
 
-export default GetAccount
+export default GetFromUser

@@ -56,12 +56,14 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 			List<RecipeDAO> recipeDAOs = recipeRepository.getAllByFkAccountId(accountRepository.findById(fkAccountId).get());
 			List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
+			if (recipeDAOs.isEmpty()) {
+				handleError("ALL recipes FROM USER not found");
+				return null;
+			}
+
 			recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO(r)));
 
-			if (recipeDTOs.isEmpty())
-				handleError("ALL recipes FROM USER not found");
-
-			return (List<RecipeDTO>) recipeDTOs;
+			return recipeDTOs;
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return null;
@@ -89,10 +91,12 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 		List<RecipeDAO> recipeDAOs = recipeRepository.getTop10ByOrderByIdDesc();
 		List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
-		recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO(r)));
-
-		if (recipeDTOs.isEmpty())
+		if (recipeDAOs.isEmpty()) {
 			handleError("LATEST TEN recipes not found");
+			return null;
+		}
+
+		recipeDAOs.forEach(r -> recipeDTOs.add(mapper.toDTO(r)));
 
 		return recipeDTOs;
 	}

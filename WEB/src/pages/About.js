@@ -1,10 +1,9 @@
 import React from 'react';
+import Spinner from "../components/Spinner";
 
 function About() {
     return(
-        <div>
-            <h1>About</h1>
-        </div>
+        <Spinner />
     );
 }
 

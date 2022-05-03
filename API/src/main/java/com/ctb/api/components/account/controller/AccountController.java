@@ -7,6 +7,7 @@ import com.ctb.api.components.account.services.crud.IDeleteExistingAccountServic
 import com.ctb.api.components.account.services.crud.IReadExistingAccountService;
 import com.ctb.api.components.account.services.crud.IUpdateExistingAccountService;
 import com.ctb.other.API;
+import com.ctb.other.JsonString;
 import com.ctb.other.Response;
 import com.ctb.other.URL;
 import com.ctb.service.validation.IPasswordValidationService;
@@ -42,7 +43,7 @@ public class AccountController {
 		if (accountDAO == null)
 			return new ResponseEntity<>(Response.INVALID_PASSWORD, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(accountDAO.getToken(), HttpStatus.OK);
+		return new ResponseEntity<>(new JsonString(accountDAO.getToken()), HttpStatus.OK);
 	}
 
 	@PostMapping(API.REGISTER)

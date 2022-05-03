@@ -1,13 +1,15 @@
 module.exports = {
-  darkMode: false, // or 'media' or 'class'
+  content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
       colors: {
-        primary: '#3B003B',
-        secondary: '#890089',
-        third: '#FF00FF',
-        fourth: '#FF89FF',
-        fifth: '#FFD8FF',
+        primary: '#000000',
+        secondary: '#3E065F',
+        secondary_trans: '#3E065FC0',
+        third: '#700B97',
+        fourth: '#8E05C2',
+        fifth: '#262626',
+        gray_trans: 'rgba(68,68,68,0.71)',
       }
     },
   },

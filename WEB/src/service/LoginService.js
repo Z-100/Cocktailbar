@@ -1,28 +1,18 @@
-import Axios from 'axios';
-
-const Login = ([key, password, isUname]) => {
+async function Login(key, password, isUname) {
 
     let url = "http://localhost:8080/account/login"
 
-    let cfg = {
+    return await fetch(url, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json',
             "Access-Control-Allow-Origin": "*",
             'key': key,
             'password': password,
             'is-uname': isUname
-        }
-    };
-
-        Axios.post(url, {}, cfg)
-        .then(response => {
-            sessionStorage.setItem("token", response.data);
-        })
-        .catch(error => console.error(error));
-
-    return {
-        token: "token",
-    }
+        },
+    })
 }
 
-export default Login;
+export default Login

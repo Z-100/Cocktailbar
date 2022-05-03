@@ -1,32 +1,20 @@
 import React from 'react';
+import Cookies from "universal-cookie";
 
-import Drink from "../components/Drink"
-
-function Home(loggedIn) {
-    let req = Drink;
-
-    if (!loggedIn) {
-        sessionStorage.removeItem('token')
-        console.log('Logged out')
-    }
-
+function Home() {
     return(
+
         <div className={"w-screen flex flex-row align-center justify-center"}>
             <div>
-                <p>sas</p>
-            </div>
-            <div className={"flex flex-col flex-nowrap w-96"}>
-                <div >
-                    <h1 className={"text-3xl"}>Welcome to your</h1>
-                    <h1 className={"text-6xl"}>Cocktail Bar</h1>
-                </div>
                 <div>
-                    <p>Create and replicate your favourite recipes!</p>
+                    <h1 className={"text-white text-right text-5xl"}>Welcome to your</h1>
+                    <h1 className={"text-white text-left text-8xl"}>Cocktailbar</h1>
+                </div>
+                <div className={"mt-12"}>
+                    <h1 className={"text-white text-center text-xl"}>View and create your very own recipes!</h1>
                 </div>
             </div>
-            <div>
-                <p>sas</p>
-            </div>
+            <div />
         </div>
     );
 }
