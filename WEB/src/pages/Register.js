@@ -11,7 +11,7 @@ function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setResponse(register(email, password, username))
+        setResponse(register(email, password, username).toString)
     }
 
     return (

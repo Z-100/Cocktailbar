@@ -12,8 +12,8 @@ public class Logger {
 
 		String current = sdf3.format(new Timestamp(System.currentTimeMillis()));
 
-		System.out.println(String.format("%s\t-\t[%s]\t%s",
-				current, type, message));
+		System.out.printf("%s\t-\t[%s]\t%s%n",
+				current, type, message);
 
 		return message;
 	}

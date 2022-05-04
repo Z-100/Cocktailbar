@@ -2,29 +2,34 @@ import React, {useState} from 'react';
 import insert from "../service/CreateNewRecipeService";
 import Cookies from 'universal-cookie';
 
-function Create() {
+function CreateDrink() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [error, setError] = useState(null)
+    const [message, setMessage] = useState(null)
+
     const cookies = new Cookies();
+
+    const validateLoggedIn = () => { //TODO Own file for this
+        if (cookies.get('email') === undefined || cookies.get('token') === undefined)
+            // Readirect to error page
+            return;
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setError(null)
+
+        setMessage(null)
 
         insert(cookies.get("email"), cookies.get("token"), title, description)
             .catch(err => {
                 console.log("Error Reading data " + err);
-                setError("Something went wrong! Try again later.")
+                setMessage("Something went wrong! Try again later.")
             });
 
-        if (error === null) {
+        if (message === null) {
             setTitle("")
             setDescription("")
-            setError("Success!")
-        }
-
-        function handleClick() {
+            setMessage("Success!")
         }
     }
 
@@ -62,10 +67,10 @@ function Create() {
                                 </label>
                             </div>
                             <div className="flex items-center justify-between">
-                                <h1 className={"-mt-6 text-red-600"}>{error}</h1>
+                                <h1 className={"-mt-6 text-red-600"}>{message}</h1>
                             </div>
                             <div className="flex items-center justify-between">
-                                <input className={"py-2 px-4 bg-fourth text-white font-semibold rounded-lg shadow-md hover:bg-third cursor-pointer"} type="submit" value="Submit drink!" />
+                                <></>
                                 <input className={"py-2 px-4 bg-fourth text-white font-semibold rounded-lg shadow-md hover:bg-third cursor-pointer"} type="submit" value="Submit drink!" />
                             </div>
                         </div>
@@ -76,4 +81,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default CreateDrink;

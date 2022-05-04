@@ -1,6 +1,6 @@
 # Functional specification Cocktail-Bar "CTB"
 
-Create and View individual cocktails and their corresponding recipes!
+CreateDrink and View individual cocktails and their corresponding recipes!
 
 - [Functional specification Cocktail-Bar "CTB"](#functional-specification-cocktail-bar-ctb)
     - [Requirements](#requirements)

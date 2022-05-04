@@ -1,37 +1,37 @@
 import React, {useState} from 'react';
 import Drink from "../components/Drink";
-import getFromUser from "../service/GetRecipesFromUserService";
 import Spinner from "../components/Spinner";
+import getFromUser from "../service/GetRecipesFromUserService";
 
 function Search() {
     const [recommended, setRecommended] = useState([])
     const [userName, setUserName] = useState("")
     const [error, setError] = useState(null)
 
-
     const fetch = (event) => {
         event.preventDefault();
+
         setRecommended([])
 
-        if (userName.length > 0) {
-            getFromUser(userName)
-                .then(response => {
-                    return response.json();
-                }).then(data => {
-                setRecommended(data)
-                setError(null)
-            }).catch(err => {
-                console.log("Error Reading data " + err);
-                setError("No drinks have been found! Try again later")
-            })
-        } else {
+        if (userName.length <= 0) {
             setError("Please enter a name!")
+            return;
         }
+        getFromUser(userName)
+            .then(response => {
+                return response.json();
+            }).then(data => {
+            setRecommended(data)
+            setError(null)
+        }).catch(err => {
+            console.log("Error Reading data " + err);
+            setError("No drinks have been found! Try again later")
+        })
     }
 
     if (recommended === null)
         return(<Spinner />)
-    else
+
     return(
         <div>
             <div className={"flex align-center justify-center"}>

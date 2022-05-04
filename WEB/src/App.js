@@ -1,15 +1,16 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/static/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import About from "./pages/About";
-import Error from "./pages/Error";
+import About from "./pages/static/About";
+import Error from "./pages/static/Error";
 import Footer from "./components/Footer"
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Recommended from "./pages/Recommended";
 import Search from "./pages/Search";
-import Create from "./pages/Create";
+import CreateDrink from "./pages/CreateDrink";
+import Impress from "./pages/static/Impress";
 
 export default function App() {
     return (
@@ -25,7 +26,8 @@ export default function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/recommended" element={<Recommended />} />
-                    <Route path="/create" element={<Create />} />
+                    <Route path="/create" element={<CreateDrink />} />
+                    <Route path="/impress" element={<Impress />} />
                     <Route path="*" element={<Error />} />
                 </Routes>
 
