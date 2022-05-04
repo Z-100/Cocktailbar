@@ -23,10 +23,14 @@ public class TokenValidationService implements ITokenValidationService {
 		AccountDAO account = repository.findByEmail(email);
 
 		if (account == null) {
-			Logger.log("Error", "Failed to retrieve account with email" + email);
+			Logger.log("Error", "Failed to retrieve account with email '" + email + "'\nLocation: TokenValidationService.java");
 			return false;
 		}
 
-		return validate.apply(account, token);
+		if (validate.apply(account, token))
+			return true;
+
+		Logger.log("Error", "Failed to validate account with email '" + email + "' and token '" + token + "'\nLocation: TokenValidationService.java");
+		return false;
 	}
 }

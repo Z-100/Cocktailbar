@@ -24,10 +24,10 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 	private final IAccountRepository accountRepository;
 	private final ARecipeMapper mapper;
 
-	public List<RecipeDTO> getRecipes(String type, String s_fkAccountId) {
+	public List<RecipeDTO> getRecipes(String type, String username) {
 		return switch (type) {
 			case "all" -> getAll();
-			case "user" -> getAllFromUser(Long.valueOf(s_fkAccountId));
+			case "user" -> getAllFromUser(username);
 			case "recommended" -> getRecommended();
 			case "latest" -> getLatestTen();
 			default -> handleError("Invalid type " + type);
@@ -51,9 +51,9 @@ public class ReadExistingRecipeService implements IReadExistingRecipeService {
 		return recipeDTOs;
 	}
 
-	private List<RecipeDTO> getAllFromUser(Long fkAccountId) {
+	private List<RecipeDTO> getAllFromUser(String username) {
 		try {
-			List<RecipeDAO> recipeDAOs = recipeRepository.getAllByFkAccountId(accountRepository.findById(fkAccountId).get());
+			List<RecipeDAO> recipeDAOs = recipeRepository.getAllByFkAccountId(accountRepository.findByUsername(username));
 			List<RecipeDTO> recipeDTOs = new ArrayList<>();
 
 			if (recipeDAOs.isEmpty()) {

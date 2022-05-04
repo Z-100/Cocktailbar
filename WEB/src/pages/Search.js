@@ -10,19 +10,23 @@ function Search() {
 
 
     const fetch = (event) => {
-        setRecommended([])
         event.preventDefault();
+        setRecommended([])
 
-        getFromUser(userName)
-            .then(response => {
-                return response.json();
-            }).then(data => {
+        if (userName.length > 0) {
+            getFromUser(userName)
+                .then(response => {
+                    return response.json();
+                }).then(data => {
                 setRecommended(data)
                 setError(null)
             }).catch(err => {
                 console.log("Error Reading data " + err);
                 setError("No drinks have been found! Try again later")
             })
+        } else {
+            setError("Please enter a name!")
+        }
     }
 
     if (recommended === null)
@@ -43,7 +47,7 @@ function Search() {
                                            value={userName}
                                            onChange={(e) => setUserName(e.target.value)}/>
                                     <div className="flex items-center justify-between">
-                                        <input className={"py-2 px-4 bg-fourth text-white font-semibold rounded-lg shadow-md hover:bg-third cursor-pointer"} type="submit" value="Search recipes" onClick={fetch}/>
+                                        <input className={"py-2 px-4 ml-5 bg-fourth text-white font-semibold rounded-lg shadow-md hover:bg-third cursor-pointer"} type="submit" value="Search recipes" onClick={fetch}/>
                                     </div>
                                 </div>
                             </label>
@@ -58,7 +62,7 @@ function Search() {
                 <div className={"flex flex-row flex-wrap justify-items-start items-stretch content-start overflow-y-auto max-h-screen no-scrollbar"}>
                     {recommended.map(drink => (
                         <div >
-                            <Drink title={drink.title} rating={5} description={drink.description} />
+                            <Drink title={drink.title} key={drink.key} rating={5} description={drink.description} />
                         </div>
                     ))}
                 </div>

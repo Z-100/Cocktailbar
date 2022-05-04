@@ -1,6 +1,6 @@
 async function Insert(email, token, title, description) {
 
-    let url = "http://localhost:8080/recioe/insert"
+    let url = "http://localhost:8080/recipe/insert"
 
     return await fetch(url, {
         method: 'POST',
