@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import login from "../service/LoginService";
 import Spinner from "../components/Spinner";
 
-function Login() {
+function Login({childToParent, user}) {
     const [uName, setUName] = useState("");
     const [password, setPassword] = useState("");
     const [response, setResponse] = useState("")
     const [error, setError] = useState(null)
-    const [isValid, setIsValid] = useState(false)
 
     let navigate = useNavigate();
 
@@ -21,28 +19,21 @@ function Login() {
 
         login(uName, password, !uName.includes("@"))
             .then(response => {
-                return response.json();
+                return response.json()
             }).then(data => {
                 setResponse(data.value)
-                setIsValid(true)
+
+                childToParent(uName, data.value)
+                console.log("[INFO] Login.js - User set")
+
+                setError(null)
+
+                navigate("/", { replace: true });
             }).catch(err => {
                 console.log("Error Reading data " + err);
                 setError("Invalid e-mail/username and/or password!")
                 setResponse("")
             });
-
-        if (isValid) {
-            const cookies = new Cookies();
-
-            cookies.set('token', response, { path: '/' });
-            cookies.set('email', uName, { path: '/' });
-
-            console.log("[INFO] Token set: " + cookies.get("token"))
-
-            setError(null)
-
-            navigate("/", { replace: true });
-        }
     }
 
     if (response === null)
@@ -64,6 +55,7 @@ function Login() {
                                 <label className="block text-white text-sm font-bold mb-2">Enter username or E-Mail:
                                     <input className="shadow appearance-none ring-third rounded w-full py-2 px-3 text-grey-darker bg-fifth"
                                            autoFocus
+                                           required
                                            type="text"
                                            placeholder="Username / E-Mail"
                                            name="username"
@@ -74,6 +66,7 @@ function Login() {
                             <div className="mb-4">
                                 <label className="block text-white text-sm font-bold mb-2">Enter password:
                                     <input className="shadow appearance-none rounded w-full py-2 px-3 text-grey-darker bg-fifth"
+                                           required
                                            type="password"
                                            placeholder="Password"
                                            name="password"

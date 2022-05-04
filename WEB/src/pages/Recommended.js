@@ -27,8 +27,9 @@ function Recommended() {
         return(<h1 className={"text-center px-3 text-white font-semibold"}>{error}</h1>)
     else
         return(
-            <div className={" h-screen flex flex-row justify-center text-center items-center"}>
-                <div className={"flex flex-row flex-wrap justify-items-start items-stretch content-start overflow-y-auto max-h-screen no-scrollbar"}>
+            <div className={"w-screen"}>
+                <h1 className={"text-white text-center mb-5 text-5xl"}>Today's Recommended drinks!</h1>
+                <div className={"flex flex-row flex-wrap justify-center overflow-y-auto max-h-screen no-scrollbar"}>
                     {recommended.map(drink => (
                         <div >
                             <Drink title={drink.title} rating={5} description={drink.description} />

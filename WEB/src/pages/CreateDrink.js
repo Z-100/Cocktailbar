@@ -1,26 +1,18 @@
 import React, {useState} from 'react';
 import insert from "../service/CreateNewRecipeService";
-import Cookies from 'universal-cookie';
 
-function CreateDrink() {
+function CreateDrink({user}) {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [message, setMessage] = useState(null)
 
-    const cookies = new Cookies();
-
-    const validateLoggedIn = () => { //TODO Own file for this
-        if (cookies.get('email') === undefined || cookies.get('token') === undefined)
-            // Readirect to error page
-            return;
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         setMessage(null)
 
-        insert(cookies.get("email"), cookies.get("token"), title, description)
+        insert(user.email, user.token, title, description)
             .catch(err => {
                 console.log("Error Reading data " + err);
                 setMessage("Something went wrong! Try again later.")
@@ -58,8 +50,7 @@ function CreateDrink() {
                             </div>
                             <div className="mb-4">
                                 <label className="block text-white text-sm font-bold mb-2">Describe your drink!
-                                    <input className="shadow appearance-none rounded w-full py-2 px-3 text-grey-darker bg-fifth"
-                                           type="text"
+                                    <textarea className="shadow appearance-none rounded h-32 w-full py-2 px-3 text-grey-darker bg-fifth"
                                            placeholder="Enter a description"
                                            name="description"
                                            value={description}

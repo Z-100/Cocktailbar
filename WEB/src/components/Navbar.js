@@ -1,29 +1,23 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import Cookies from 'universal-cookie';
-import logout from '../service/LogoutService';
+import Cookies from "universal-cookie";
 
-function Navbar() {
-    const cookies = new Cookies();
+function Navbar({childToParent, user}) {
 
-    const [item, setItemValue] = useState(() => {
-        if (cookies.get("token")) {
-            return cookies.get("token");
-        }
-        return null;
-    });
-
-    if (item !== null) {
-        return <LoggedInNavbar />;
+    if (user.token.length > 0) {
+        return <LoggedInNavbar childToParent={childToParent} user={user}/>;
     }
     return <GuestGreeting />;
 }
 
-function Logout() {
-    logout()
-}
+function LoggedInNavbar({childToParent, user}) {
+    const logout = () => {
+        let cookies = new Cookies()
+        childToParent("", "")
+        cookies.replace("email", "")
+        cookies.replace("token", "")
+    }
 
-function LoggedInNavbar() {
     return(
         <div className={"h-16 p-5 bg-primary sticky top-0"}>
             <nav>
@@ -36,7 +30,7 @@ function LoggedInNavbar() {
                     </div>
                     <div>
                         <Link className={"py-2 px-4 text-white font-semibold hover:text-fifth"} to="/create"> Create </Link>
-                        <Link className={"py-2 px-4 text-white font-semibold hover:text-fifth"} to="/" onClick={Logout}> Logout </Link>
+                        <Link className={"py-2 px-4 text-white font-semibold hover:text-fifth"} to="/" onClick={logout}> Logout </Link>
                         <Link className={"py-2 px-4 bg-fourth text-white font-semibold rounded-lg shadow-md hover:bg-third"} to="/profile"> Profile </Link>
                     </div>
                 </div>

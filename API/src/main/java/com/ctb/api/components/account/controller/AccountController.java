@@ -57,11 +57,12 @@ public class AccountController {
 		if (token == null)
 			return new ResponseEntity<>(Response.SOMETHING_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
-		return new ResponseEntity<>(token, HttpStatus.OK);
+		return new ResponseEntity<>(new JsonString(token), HttpStatus.OK);
 	}
 
-	@GetMapping(API.GET)
-	public ResponseEntity<?> getAccount(@RequestParam("username") String username) {
+	@GetMapping(API.GET + "/{username}")
+	public ResponseEntity<?> getAccount(
+			@PathVariable("username") String username) {
 
 		AccountDTO account = readService.getAccount(username);
 
