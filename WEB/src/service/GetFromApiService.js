@@ -1,6 +1,6 @@
 async function GetAccount(username) {
 
-    let url = "http://localhost:8080/account/get?username=" + username
+    let url = "http://localhost:8080/account/get/" + username
 
     return await fetch(url, {
         method: 'GET',

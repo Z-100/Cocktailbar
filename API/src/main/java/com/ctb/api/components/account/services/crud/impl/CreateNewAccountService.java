@@ -29,6 +29,11 @@ public class CreateNewAccountService implements ICreateNewAccountService {
 			return null;
 		}
 
+		if (usernameAlreadyRegistered(username)) {
+			Logger.log("ERROR", "Account already exists with username " + username);
+			return null;
+		}
+
 		String token = tokenGenerator.generate();
 
 		if (token == null) {
@@ -54,6 +59,10 @@ public class CreateNewAccountService implements ICreateNewAccountService {
 
 	private boolean emailAlreadyRegistered(String email) {
 		return accountRepository.findByEmail(email) != null;
+	}
+
+	private boolean usernameAlreadyRegistered(String username) {
+		return accountRepository.findByUsername(username) != null;
 	}
 
 	@Transactional

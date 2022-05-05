@@ -1,18 +1,45 @@
 import React from 'react';
 import {useState} from "react";
-import register from "../service/GetFromApiService";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import register from '../service/RegisterService'
+import Spinner from "../components/Spinner";
 
-function Register() {
+function Register({childToParent, user}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
-    const [response, setResponse] = useState("Not registered yet!")
+    const [response, setResponse] = useState("")
+    const [error, setError] = useState("")
+
+    let navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setResponse(register(email, password, username).toString)
+
+        setResponse(null)
+
+        register(email, password, username)
+            .then(response => {
+                return response.json()
+            }).then(data => {
+                setResponse(data.value)
+                console.log(data.value)
+
+                childToParent(email, data.value)
+                console.log("[INFO] Register.js - User set")
+
+                setError("")
+
+                navigate("/", { replace: true });
+        }).catch(err => {
+            console.log("Error Reading data " + err);
+            setError("E-mail and/or username already taken!")
+            setResponse("")
+        });
     }
+
+    if (response === null)
+        return(<Spinner />)
 
     return (
         <div className={"w-screen"}>
@@ -29,6 +56,7 @@ function Register() {
                             <div className="mb-4">
                                 <label className="block text-white text-sm font-bold mb-2">Create username:
                                     <input className="shadow appearance-none ring-third rounded w-full py-2 px-3 text-grey-darker bg-fifth"
+                                        required
                                         autoFocus
                                         type="text"
                                         placeholder="Username"
@@ -40,6 +68,7 @@ function Register() {
                             <div className="mb-4">
                                 <label className="block text-white text-sm font-bold mb-2">Create new password:
                                     <input className="shadow appearance-none ring-third rounded w-full py-2 px-3 text-grey-darker bg-fifth"
+                                        required
                                         type="password"
                                         placeholder="Password"
                                         name="password"
@@ -50,12 +79,16 @@ function Register() {
                             <div className="mb-4">
                                 <label className="block text-white text-sm font-bold mb-2">Enter E-Mail address:
                                     <input className="shadow appearance-none ring-third rounded w-full py-2 px-3 text-grey-darker bg-fifth"
-                                        type="text"
+                                        required
+                                        type="email"
                                         placeholder="E-Mail address"
                                         name="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}/>
                                 </label>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <h1 className={"-mt-6 text-red-600"}>{error}</h1>
                             </div>
                             <div className="flex items-center justify-between">
                                 <Link className="inline-block align-baseline font-bold text-sm text-blue text-white hover:text-blue-darker"
