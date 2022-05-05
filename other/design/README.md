@@ -3,4 +3,4 @@ Here you'll find all the diagrams, which were created during the analysis & desi
 
 * [Usecase](https://github.com/Z-100/Cocktailbar/blob/master/other/design/usecase/usecase.png.jpg)
 * [Class diagram API](https://github.com/Z-100/Cocktailbar/blob/master/other/design/classdiagram/API.png)
-* [Class diagram API](https://github.com/Z-100/Cocktailbar/blob/master/other/design/classdiagram/WEB.png)
+* [Class diagram WEB](https://github.com/Z-100/Cocktailbar/blob/master/other/design/classdiagram/WEB.png)
