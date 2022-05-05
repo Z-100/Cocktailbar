@@ -18,7 +18,7 @@ jobs:
         working-directory: ./WEB
         run: npm ci
       - name: Use Node.js ${{ matrix.node-version }}
-        working-directory: ./
+        working-directory: ./WEB
         run: npm ci
       - name: Run Build
         working-directory: ./WEB
